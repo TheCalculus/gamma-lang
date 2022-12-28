@@ -1,0 +1,9 @@
+var x: int = 10;
+
+fn main(): int {
+    var y: int = 10;
+};
+
+everything is a comment unless in a context where it should not be
+
+y = 20;
