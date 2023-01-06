@@ -82,29 +82,29 @@ Token nextToken(Lexer* lexer) {
 
     switch (activeCharacter) {
         case(':'):
-        return (Token) { TYP_ANN, ':' };
+            return (Token) { TYP_ANN, ':' };
         case(';'):
-        return (Token) { THE_EOI, ';' };
+            return (Token) { THE_EOI, ';' };
         case('+'):
-        return (Token) { ARM_PLU, '+' };
+            return (Token) { ARM_PLU, '+' };
         case('-'):
-        return (Token) { ARM_SUB, '-' };
+            return (Token) { ARM_SUB, '-' };
         case('*'):
-        return (Token) { ARM_MUL, '*' };
+            return (Token) { ARM_MUL, '*' };
         case('/'):
-        return (Token) { ARM_DIV, '/' };
+            return (Token) { ARM_DIV, '/' };
         case('%'):
-        return (Token) { ARM_MOD, '%' };
+            return (Token) { ARM_MOD, '%' };
         case('='): // TODO: add case for checking equivalence (==)
-        return (Token) { EXP_ASG, '=' };
+            return (Token) { EXP_ASG, '=' };
         case('{'):
-        return (Token) { BLK_BEG, '{' };
+            return (Token) { BLK_BEG, '{' };
         case('}'):
-        return (Token) { BLK_END, '}' };
+            return (Token) { BLK_END, '}' };
         case('('):
-        return (Token) { EXP_BEG, '(' };
+            return (Token) { EXP_BEG, '(' };
         case(')'):
-        return (Token) { EXP_END, ')' };
+            return (Token) { EXP_END, ')' };
     }
 
     char value[MAXIMUM_LENGTH];
@@ -145,9 +145,6 @@ void tokenize(char* buffer, Token tokenList[]) {
     while (!isEOF) {
         Token token = nextToken(lex);
         tokenList[++index] = token;
-
-        // printf("TOKEN: %d, VALUE: %s, FINAL_COL: %d\n",
-        //        token.type, token.value, lex->position);
 
         isEOF = (token.type == THE_EOF);
     }

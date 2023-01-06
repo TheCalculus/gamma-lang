@@ -2,8 +2,8 @@
 
 // f(ile)2s(tring).c
 
-char *reader(FILE *f, int *lengthOut) {
-    char *buffer;
+char* reader(FILE *f, int *lengthOut) {
+    char* buffer;
     long length;
 
     if (f) {

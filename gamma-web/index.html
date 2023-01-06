@@ -1,0 +1,36 @@
+<html lang="en" class="notranslate" translate="no">
+    <head>
+        <title>The Gamma Programming Language</title>
+        <link href="https://fonts.googleapis.com/css?family=Merriweather" rel='stylesheet'>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js">
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body>
+        <section class="fullscreen">
+            <span class="fakecode med">var title: str = <span class="title big">G&Lambda;MM&Lambda;</span>;</span>
+            <span class="fakecode sml">var descr: str = <span class="disc">A not-so-horrible programming language, written in pure c</span>;</span><br>
+            <section class="pre-back">
+<pre>
+var x: int = 10;
+var y: int = 10 * x;
+
+fn main() -> int {
+    printf("<span class="title">G&Lambda;MM&Lambda;</span>");
+    return 0;
+}
+</pre>
+            </section>
+        </section>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        var preTags = document.getElementsByTagName('pre');
+        var size = preTags.length;
+
+        for (var i=0; i < size; i++) { 
+            preTags[i].innerHTML = '<code>'+preTags[i].innerHTML+'</code>'; // wrap content of pre tag in code tag
+        }
+       
+        hljs.highlightAll();
+    </script>
+</html>

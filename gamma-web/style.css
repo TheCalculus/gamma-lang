@@ -1,0 +1,80 @@
+body,
+html {
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.disc {
+    font-size: 1.3rem;
+    font-family: "Merriweather";
+    color: rgb(255, 255, 255);
+}
+
+a {
+    text-decoration: none;
+    color: rgb(252, 186, 3);
+}
+
+
+.fullscreen {
+    width: 100%;
+    height: 100%;
+    background: rgb(7, 21, 43);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.pre-back {
+    background-image: url('https://github.com/TheCalculus/gamma-lang/raw/main/the%20gamma%20programming%20language.png?raw=true');
+    background-position: center;
+    background-size: 75%;
+    background-repeat: no-repeat;
+}
+
+pre {
+    font-family: monospace;
+    font-size: 2.5rem;
+    color: lightgrey;
+    background-color: rgba(7, 21, 43, 0.75);
+    backdrop-filter: blur(1.25px);
+}
+
+.big { font-size: 2.75rem; }
+.med { font-size: 2rem; }
+.sml { font-size: 1.2rem; }
+
+.title {
+    font-family: 'Merriweather';
+    color: white;
+}
+
+.fakecode {
+    font-family: monospace;
+    color: rgb(150, 150, 150);
+}
+
+.hljs-keyword {
+    color: #d390e7;
+    font-weight: bold;
+}
+
+.hljs-built_in {
+    color: #5ebaa5;
+}
+
+.hljs-number {
+    color: cyan;
+}
+
+.hljs-function {
+    color: #e77171;
+}
+
+.hljs-string {
+    color: lightgreen;
+}
