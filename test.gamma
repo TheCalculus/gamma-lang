@@ -1,9 +1,7 @@
 var x: int = 10;
+var y: int = 1;
+var c: int = 0;
+var b: int = 11;
+var p: int = 199;
 
-fn main(): int {
-    var y: int = 10;
-};
-
-everything is a comment unless in a context where it should not be
-
-y = 20;
+y = 10 * a + 3 + 4;
