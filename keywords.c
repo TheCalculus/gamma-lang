@@ -1,9 +1,3 @@
-/*
- * KEYWORDS - keywords.c
- * Contains enum with all possible keywords for language. Used by the lexical analyzer (tokenizer.c) to classify the 'type' of every single block of text in input *.gamma.
- * There are NUM_KEYWORDS keywords in enum TokenType.
- * */
-
 typedef enum {
     ARM_DIV,
     ARM_MOD,

@@ -1,8 +1,3 @@
-/*
- * TRIE DATA STRUCTURE - trie.c
- * Implementation proudly yoinked from geeksforgeeks.
- * */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,9 +1,3 @@
-/*
- * TOKENIZER / LEXICAL ANALYZER - tokenizer.c
- * Iterates through input *.gamma file and extracts tokens of types from keywords.c
- * Array of tokens returned format TokenType[bufferSize].
- * */
-
 #include <stdlib.h>
 
 #include "keywords.c" 

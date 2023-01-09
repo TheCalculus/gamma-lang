@@ -4,13 +4,6 @@
 #include "reader.c"
 #include "tokenizer.c"
 
-int parseint(char *target) { int index = -1; int value = 0;
-    while (target[++index] != '\0')
-        value = value * 10 + (target[index] - 48);
-
-    return value;
-}
-
 typedef enum {
     ADD_STACK,
     GET_STACK,
@@ -24,9 +17,9 @@ typedef enum {
 } Command;
 
 struct Instruction {
-  Command purpose;
-  char* data;
-  struct Instruction* link;
+    Command purpose;
+    char* data;
+    struct Instruction* link;
 };
 
 void printInstructionTree(struct Instruction* instruction) {
@@ -38,22 +31,35 @@ void printInstructionTree(struct Instruction* instruction) {
     }
 }
 
-void appendToList(struct Instruction **instruction, Command purpose, char* data) {
-    struct Instruction *newNode = (struct Instruction *)malloc(sizeof(struct Instruction));
+struct Instruction newInstruction(Command purpose, char* data, struct Instruction* link) {
+    return (struct Instruction) { purpose, data, link };
+}
+
+#define MAXIMUM_INSTRUCTIONS 100
+struct Instruction* EXECUTION_PATH[MAXIMUM_INSTRUCTIONS];
+int instruction_capacity = -1;
+
+void appendToList(Command purpose, char* data, struct Instruction** instruction) {
+    struct Instruction* newNode = (struct Instruction*)malloc(sizeof(struct Instruction));
 
     newNode->purpose = purpose;
     newNode->data = strdup(data);
     newNode->link = *instruction;
     
     *instruction = newNode;
-} 
+}
 
-int INSTRUCTION_INDEX = -1;
+void addToPath(struct Instruction* instruction) {
+    if (instruction_capacity != MAXIMUM_INSTRUCTIONS)
+        EXECUTION_PATH[++instruction_capacity] = instruction;
+    return;
+}
 
-int main() {
+void generateBytecode() {
+    // let generateBytecode open and read the file, for now
     int bufferSize;
-    FILE *f = fopen("test.gamma", "rb");   // from stdio
-    char *buffer = reader(f, &bufferSize); // from reader.c
+    FILE* f = fopen("test.gamma", "rb");   // from stdio
+    char* buffer = reader(f, &bufferSize); // from reader.c
 
     Token tokens[bufferSize];
 
@@ -66,43 +72,96 @@ int main() {
     while (tokens[++tokenizerIndex].type != THE_EOF) {
         TokenType type = tokens[tokenizerIndex].type;
 
-        switch (type) {
-            case EXP_DEF:
-                printf("ADD_STACK %s %s\n", (beginning + tokenizerIndex + 1)->value, (beginning + tokenizerIndex + 5)->value);
-                break;
-            case EXP_ASG:
-                if (tokens[tokenizerIndex - 2].type == TYP_ANN) continue;
-                
-                int RHSindex = 0;
-                struct Instruction* instruction = NULL;
+        if (type == EXP_DEF) {
+            struct Instruction definition = newInstruction(
+                    (Command) ADD_STACK,
+                    (beginning + tokenizerIndex + 1)->value,
+                    NULL
+            );
+            struct Instruction focus = newInstruction(
+                    (Command) FOC_STACK,
+                    (beginning + tokenizerIndex + 1)->value,
+                    NULL
+            );
+            struct Instruction modification = newInstruction(
+                    (Command) MOD_STACK,
+                    (beginning + tokenizerIndex + 5)->value,
+                    NULL
+            );
 
-                Command command = OPR_ADD;
+            addToPath(&definition);
+            addToPath(&focus);
+            addToPath(&modification);
 
-                while (tokens[tokenizerIndex + (++RHSindex)].type != THE_EOI) {
-                    Token RHScurr = *(beginning + tokenizerIndex + RHSindex);
+            printf("ADD_STACK %s\n", (beginning + tokenizerIndex + 1)->value);
+            printf("FOC_STACK %s\n", (beginning + tokenizerIndex + 1)->value);
+            printf("MOD_STACK %s\n\n", (beginning + tokenizerIndex + 5)->value);
+        }
+        else if (type == EXP_ASG) {
+            if (tokens[tokenizerIndex - 2].type == TYP_ANN) continue;
+            
+            int RHSindex = 0;
 
-                    if (RHScurr.type == KWD_INT || RHScurr.type == IDENTIF) {
-                        appendToList(&instruction, command, RHScurr.value);
-                        continue; 
+            struct Instruction* nullins = NULL;
+
+            struct Instruction focus = newInstruction(
+                    (Command) FOC_STACK,
+                    (beginning + tokenizerIndex - 1)->value,
+                    NULL
+            );
+            struct Instruction modification = newInstruction(
+                    (Command) MOD_STACK,
+                    NULL,
+                    nullins
+            );
+
+            Command command = OPR_ADD;
+            int res = 0;
+
+            while (tokens[tokenizerIndex + (++RHSindex)].type != THE_EOI) {
+                Token RHScurr = *(beginning + tokenizerIndex + RHSindex);
+
+                if (RHScurr.type == KWD_INT || RHScurr.type == IDENTIF) {
+                    appendToList(command, RHScurr.value, &modification.link);
+                    switch (modification.link->purpose) {
+                        case OPR_ADD: 
+                            res += atoi(modification.link->data);
+                            break;
+                        case OPR_SUB:
+                            res -= atoi(modification.link->data); 
+                            break;
+                        case OPR_MUL:
+                            res *= atoi(modification.link->data);
+                            break;
+                        case OPR_DIV:
+                            res /= atoi(modification.link->data);
+                            break;
                     }
-
-                    switch (RHScurr.type) {
-                        case ARM_PLU: command = OPR_ADD; break;
-                        case ARM_SUB: command = OPR_SUB; break;
-                        case ARM_MUL: command = OPR_MUL; break;
-                        case ARM_DIV: command = OPR_DIV; break;
-                    }
-
-                    instruction->purpose = command;
+                    continue; 
                 }
 
-                printf("MOD_STACK %s (", (beginning + tokenizerIndex - 1)->value);
-                printInstructionTree(instruction);
-                printf(" )\n");
+                switch (RHScurr.type) {
+                    case ARM_PLU: command = OPR_ADD; break;
+                    case ARM_SUB: command = OPR_SUB; break;
+                    case ARM_MUL: command = OPR_MUL; break;
+                    case ARM_DIV: command = OPR_DIV; break;
+                }
 
-                break;
+                modification.link->purpose = command;
+            }
+
+            addToPath(&focus); 
+            addToPath(&modification); 
+
+            printf("FOC_STACK %s\n", (beginning + tokenizerIndex - 1)->value);
+            printf("MOD_STACK (");
+            printInstructionTree(modification.link);
+            printf(" ) (%d)\n", res);
         }
     }
+}
 
+int main() {
+    generateBytecode(); // generates mini-instructions that are then run by a parser in the same file
     return 0;
 }
