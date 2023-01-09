@@ -46,6 +46,20 @@ In ```MOD_STACK (A) (B)```, A is the value being assigned to the currently focus
 ```MOD_STACK``` command to showcase the unusual parsing of arithmetic expressions in the bytecode. The 'answer' calculated to the arithmetic may seem incorrect,
 but this is due to the reversal of the terms and operations in the expression. This allows for the iterative parsing of bytecode, resulting in a correctly
 evaluated arithmetic expression, excluding the order of operations.<br>
-TODO: 
+### TODO:
 - add support for evaluating operations adhering to the order of operations
-  - support brackets
+    - support brackets
+- add support for verifying whether an object is in the stack, before assigning to it
+- RHS parsing to retrieve objects from stack if expression is something like ```y = x```
+- error handling to operation parsing (division by zero)
+- procs (functions)
+    - definition
+    - return (return a value)
+    - recursive depth (configurable)
+- perhaps basic OOP
+    - class definition
+    - OOP features (no inheritance, because why?)
+- file linking, write standard libraries (in gamma because cool)
+- allow for linking with files written in c, so I won't have to rewrite many libs
+### NOTE:
+I do not intend for this language to be used for any SERIOUS projects. These features are being added just because they are 'fun' to implement. Do not use this programming language for the sake of your sanity. The lack of any features (atleast at this stage) makes it a pain to write with.
