@@ -45,7 +45,7 @@ MOD_STACK ( MULTIPLY 3 MULTIPLY 2 ) (6)
 In ```MOD_STACK (A) (B)```, A is the value being assigned to the currently focused value in stack. B is not necessarily part of the bytecode, and printed next to the
 ```MOD_STACK``` command to showcase the unusual parsing of arithmetic expressions in the bytecode. The 'answer' calculated to the arithmetic may seem incorrect,
 but this is due to the reversal of the terms and operations in the expression. This allows for the iterative parsing of bytecode, resulting in a correctly
-evaluated arithmetic expression, excluding the order of operations.
+evaluated arithmetic expression, excluding the order of operations.<br>
 TODO: 
 - add support for evaluating operations adhering to the order of operations
   - support brackets
